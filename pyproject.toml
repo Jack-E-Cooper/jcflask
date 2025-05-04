@@ -15,4 +15,4 @@ testpaths = ["src/tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["flaskr"]
+source = ["jcflask"]
