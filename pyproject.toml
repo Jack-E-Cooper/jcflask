@@ -1,0 +1,18 @@
+[project]
+name = "jcflask"
+version = "0.1.0"
+description = "Jack Cooper's flask website."
+dependencies = [
+    "flask",
+]
+
+[project.urls]
+Homepace = ""
+Issues = ""
+
+[tool.pytest.ini_options]
+testpaths = ["src/tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["flaskr"]
