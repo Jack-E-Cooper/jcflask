@@ -12,6 +12,12 @@ Issues = ""
 
 [tool.pytest.ini_options]
 testpaths = ["src/tests"]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = [
+  "src"
+]
 
 [tool.coverage.run]
 branch = true
