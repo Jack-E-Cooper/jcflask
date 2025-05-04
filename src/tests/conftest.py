@@ -25,3 +25,11 @@ def client(app):
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
+
+@pytest.fixture
+def nav_bar_contents():
+    return [
+    b"Jack Cooper",
+    b"Home", 
+    b"About",
+    ] 
