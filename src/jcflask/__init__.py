@@ -3,22 +3,22 @@ import os
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 
+from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
 
 def create_app(test_config=None):
 
     app = Flask(__name__)
 
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
-
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+    # Load configuration based on the environment
+    env = os.getenv('FLASK_ENV', 'production')
+    if test_config:
+        app.config.from_object(TestingConfig)
+    elif env == 'development':
+        app.config.from_object(DevelopmentConfig)
+    elif env == 'production':
+        app.config.from_object(ProductionConfig)
     else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
+        raise ValueError(f"Unknown FLASK_ENV: {env}")
 
     # ensure the instance folder exists
     try:
@@ -26,19 +26,25 @@ def create_app(test_config=None):
     except OSError:
         pass
 
- 
-
     @app.route('/favicon.ico')
     def favicon():
         return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-    from . import landing
-    app.register_blueprint(landing.bp)
+    from . import home
+    app.register_blueprint(home.bp)
     app.add_url_rule('/', endpoint='index')
 
     from . import about
     app.register_blueprint(about.bp)
-    # app.add_url_rule('/', endpoint='index')
+
+    from . import portfolio
+    app.register_blueprint(portfolio.bp)
+
+    from . import blog
+    app.register_blueprint(blog.bp)
+
+    from . import contact
+    app.register_blueprint(contact.bp)
 
     return app
 

@@ -1,8 +1,10 @@
 import pytest
 
-page_url = '/about'
+page_url = '/portfolio'
 
 def test_header(client):
     response = client.get(page_url)
-    assert b"About Me - John Cooper" in response.data
+    assert b"My Projects" in response.data
+
+
 

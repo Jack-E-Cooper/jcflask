@@ -3,8 +3,8 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-bp = Blueprint('about', __name__)
+bp = Blueprint('home', __name__)
 
-@bp.route('/about')
+@bp.route('/')
 def index():
-    return render_template('about.html', active_page='about')
+    return render_template('home.html', active_page='home')
