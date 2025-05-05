@@ -6,3 +6,4 @@ beautifulsoup4
 # Flask-Mail
 pytest-mock
 flask-sqlalchemy
+markdown

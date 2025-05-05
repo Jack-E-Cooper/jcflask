@@ -1,20 +1,13 @@
+import os
+
 class Config:
     # General Flask Config
     SECRET_KEY = 'your_secret_key'  # Replace with a secure key
     DEBUG = False
     TESTING = False
 
-    # Mail Configuration
-    MAIL_SERVER = 'smtp.example.com'  # Replace with your SMTP server
-    MAIL_PORT = 587  # Replace with your SMTP port
-    MAIL_USE_TLS = True
-    MAIL_USE_SSL = False
-    MAIL_USERNAME = 'your_email@example.com'  # Replace with your email
-    MAIL_PASSWORD = 'your_password'  # Replace with your email password
-    MAIL_DEFAULT_SENDER = 'noreply@example.com'  # Replace with a no-reply email
-
     # Database Configuration
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///jcflask.db'  # Default to SQLite
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///jcflask.db')  # Use env variable or default to SQLite
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):

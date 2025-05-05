@@ -4,6 +4,7 @@ from flask import (Flask, redirect, render_template, request,
 from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
 
 from . import db
+from .admin import admin_bp
 
 def create_app(test_config=None):
 
@@ -48,6 +49,8 @@ def create_app(test_config=None):
 
     from . import contact
     app.register_blueprint(contact.bp)
+
+    app.register_blueprint(admin_bp)
 
     return app
 

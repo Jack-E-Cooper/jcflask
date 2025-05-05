@@ -4,6 +4,7 @@ from flask import (
 from werkzeug.exceptions import abort
 from jcflask.db import db
 from jcflask.models import BlogPost
+import markdown  # Add this import
 
 bp = Blueprint('blog', __name__)
 
@@ -19,4 +20,5 @@ def view_post(post_id):
     post = db.session.get(BlogPost, post_id)  # Use Session.get() for SQLAlchemy 2.0 compatibility
     if not post:
         abort(404)
+    post.content = markdown.markdown(post.content)  # Render Markdown to HTML
     return render_template('view_post.html', active_page='blog', post=post)
