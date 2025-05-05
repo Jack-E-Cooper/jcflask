@@ -3,5 +3,6 @@ gunicorn
 pytest
 coverage
 beautifulsoup4
-Flask-Mail
+# Flask-Mail
 pytest-mock
+flask-sqlalchemy

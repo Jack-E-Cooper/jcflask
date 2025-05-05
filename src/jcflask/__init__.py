@@ -1,9 +1,9 @@
 import os
-
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
-
 from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
+
+from . import db
 
 def create_app(test_config=None):
 
@@ -20,7 +20,10 @@ def create_app(test_config=None):
     else:
         raise ValueError(f"Unknown FLASK_ENV: {env}")
 
-    # ensure the instance folder exists
+    # Initialize SQLAlchemy with the app
+    db.init_app(app)
+
+    # Ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
@@ -47,4 +50,6 @@ def create_app(test_config=None):
     app.register_blueprint(contact.bp)
 
     return app
+
+
 

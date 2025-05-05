@@ -13,16 +13,18 @@ class Config:
     MAIL_PASSWORD = 'your_password'  # Replace with your email password
     MAIL_DEFAULT_SENDER = 'noreply@example.com'  # Replace with a no-reply email
 
+    # Database Configuration
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///jcflask.db'  # Default to SQLite
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'  # Development database
 
 class TestingConfig(Config):
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'  # Testing database
 
 class ProductionConfig(Config):
     DEBUG = False
-
-
-# SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')
-# MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-# MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'  # Production database
