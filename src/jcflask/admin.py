@@ -2,18 +2,21 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from jcflask.db import db
 from jcflask.models import BlogPost
 
-admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
+bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-@admin_bp.route('/posts')
+@bp.route('/posts')
 def list_posts():
     posts = BlogPost.query.order_by(BlogPost.created_at.desc()).all()
     return render_template('admin/list_posts.html', posts=posts)
 
-@admin_bp.route('/posts/new', methods=['GET', 'POST'])
+@bp.route('/posts/new', methods=['GET', 'POST'])
 def create_post():
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
+        title = request.form.get('title')
+        content = request.form.get('content')
+        if not title or not content:
+            flash('Title and content are required!', 'danger')
+            return redirect(url_for('admin.create_post'))
         new_post = BlogPost(title=title, content=content)
         db.session.add(new_post)
         db.session.commit()
@@ -21,7 +24,7 @@ def create_post():
         return redirect(url_for('admin.list_posts'))
     return render_template('admin/create_post.html')
 
-@admin_bp.route('/posts/<int:post_id>/edit', methods=['GET', 'POST'])
+@bp.route('/posts/<int:post_id>/edit', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = db.session.get(BlogPost, post_id)  # Updated to session.get
     if not post:
@@ -34,7 +37,7 @@ def edit_post(post_id):
         return redirect(url_for('admin.list_posts'))
     return render_template('admin/edit_post.html', post=post)
 
-@admin_bp.route('/posts/<int:post_id>/delete', methods=['POST'])
+@bp.route('/posts/<int:post_id>/delete', methods=['POST'])
 def delete_post(post_id):
     post = db.session.get(BlogPost, post_id)  # Updated to session.get
     if not post:

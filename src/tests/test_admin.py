@@ -1,6 +1,8 @@
 from jcflask.models import BlogPost
 from jcflask.db import db
 import markdown
+import pytest
+from unittest.mock import patch, MagicMock
 
 def test_admin_create_post(client, app):
     response = client.post('/admin/posts/new', data={

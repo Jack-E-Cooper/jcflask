@@ -13,3 +13,5 @@ services:
     project: .
     language: python
     host: appservice
+    environmentVariables:
+      AZURE_KEY_VAULT_NAME: jcflaskportfolioAdmin
