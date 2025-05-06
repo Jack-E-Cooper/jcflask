@@ -35,17 +35,18 @@ def client(app):
 def runner(app):
     return app.test_cli_runner()
 
-@pytest.fixture(scope="function", autouse=True)
-def reset_db(app):
+@pytest.fixture(autouse=True)
+def reset_database(app):
     """Reset the database before each test."""
     with app.app_context():
-        db.session.query(BlogPost).delete()  # Clear all blog posts
+        db.session.query(BlogPost).delete()
         db.session.commit()
+        db.session.close()  # Ensure the session is fully closed
 
 @pytest.fixture(scope="session")
 def live_server(app, live_server):
     """Session-scoped live server fixture."""
-    live_server._app = app  # Explicitly set the app for the live server
+    live_server._app = app
     live_server.port = 5001  # Specify a custom port to avoid conflicts
     live_server.start()
     return live_server

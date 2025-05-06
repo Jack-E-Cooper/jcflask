@@ -4,6 +4,13 @@ import markdown
 import pytest
 from unittest.mock import patch, MagicMock
 
+@pytest.fixture(autouse=True)
+def reset_database(app):
+    """Reset the database before each test."""
+    with app.app_context():
+        db.session.query(BlogPost).delete()
+        db.session.commit()
+
 def test_admin_create_post(client, app):
     response = client.post('/admin/posts/new', data={
         'title': 'Test Post',

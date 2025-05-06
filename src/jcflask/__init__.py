@@ -3,15 +3,11 @@ import markdown
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
-
-
 from . import db
 
-
-
 def create_app(test_config=None):
-
-    app = Flask(__name__, instance_relative_config=True)
+    """Create and configure the Flask application."""
+    app = Flask(__name__)
 
     # Load configuration based on the environment
     env = os.getenv('FLASK_ENV', 'production')
@@ -42,6 +38,7 @@ def create_app(test_config=None):
     def favicon():
         return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+    # Register blueprints
     from . import home
     app.register_blueprint(home.bp)
     app.add_url_rule('/', endpoint='index')

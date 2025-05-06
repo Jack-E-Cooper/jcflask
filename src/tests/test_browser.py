@@ -7,6 +7,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from jcflask.db import db
+from jcflask.models import BlogPost
+import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+@pytest.fixture(autouse=True)
+def reset_database(app):
+    """Reset the database before each test."""
+    with app.app_context():
+        db.session.query(BlogPost).delete()
+        db.session.commit()
 
 @pytest.fixture
 def browser():
@@ -22,29 +35,27 @@ def browser():
 
 def test_new_post_button(browser, live_server):
     """Test the 'New Post' button functionality."""
-    # Ensure the live server is running and get its URL
-    live_server_url = live_server.url().rstrip("/")  # Normalize URL by removing trailing slash
-    assert isinstance(live_server_url, str), "Live server URL must be a string"
-    assert live_server_url.startswith("http://"), "Live server URL must start with http://"
-
-    # Navigate to the admin posts page
+    live_server_url = live_server.url().rstrip("/")
     browser.get(f"{live_server_url}/admin/posts")
 
-    # Find and click the "New Post" button
-    new_post_button = browser.find_element(By.LINK_TEXT, "Create New Post")
+    # Wait for the "Create New Post" button to appear
+    new_post_button = WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.LINK_TEXT, "Create New Post"))
+    )
     new_post_button.click()
 
-    # Verify that the browser navigates to the "Create Post" page
+    # Verify navigation
     assert "Create Post" in browser.title
-    assert browser.current_url.rstrip("/") == f"{live_server_url}/admin/posts/new"  # Normalize and compare URLs
+    assert browser.current_url.rstrip("/") == f"{live_server_url}/admin/posts/new"
 
 def test_create_post_with_markdown(browser, live_server):
-    """Test creating a new post with Markdown content."""
+    logging.debug("Starting test_create_post_with_markdown")
     live_server_url = live_server.url()
     browser.get(f"{live_server_url}/admin/posts/new")
+    logging.debug("Navigated to new post page")
 
-    # Fill out the title field
-    browser.find_element(By.ID, "title").send_keys("Markdown Test Post")
+    unique_title = f"Markdown Test Post {int(time.time())}"  # Unique title
+    browser.find_element(By.ID, "title").send_keys(unique_title)
 
     # Interact with the EasyMDE editor
     editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
@@ -59,7 +70,7 @@ def test_create_post_with_markdown(browser, live_server):
 
     # Verify the post is displayed correctly on the blog page
     browser.get(f"{live_server_url}/blog")
-    assert "Markdown Test Post" in browser.page_source
+    assert unique_title in browser.page_source
     assert "<h1>Markdown Title</h1>" in browser.page_source
     assert "<p>This is a <strong>Markdown</strong> post.</p>" in browser.page_source
 
