@@ -1,6 +1,7 @@
 import pytest
 from bs4 import BeautifulSoup
 
+
 # Define a test for each route that should have a specific nav item active.
 @pytest.mark.parametrize(
     "url, expected_active_text",
