@@ -3,6 +3,7 @@ import tempfile
 import pytest
 from jcflask import create_app
 from jcflask.db import db
+from jcflask.models import BlogPost
 
 @pytest.fixture(scope="session")
 def app():
@@ -33,6 +34,13 @@ def client(app):
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
+
+@pytest.fixture(scope="function", autouse=True)
+def reset_db(app):
+    """Reset the database before each test."""
+    with app.app_context():
+        db.session.query(BlogPost).delete()  # Clear all blog posts
+        db.session.commit()
 
 @pytest.fixture(scope="session")
 def live_server(app, live_server):

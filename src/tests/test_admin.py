@@ -73,3 +73,10 @@ def test_view_markdown_post(client, app):
     assert response.status_code == 200
     assert b"<h1>Markdown Title</h1>" in response.data  # Check rendered Markdown
     assert b"<p>This is a <strong>Markdown</strong> post.</p>" in response.data
+
+def test_database_starts_empty(client, app):
+    """Test that the database starts empty."""
+    with app.app_context():
+        posts = BlogPost.query.all()
+        assert len(posts) == 0, "Database should start empty."
+

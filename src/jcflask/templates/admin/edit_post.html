@@ -5,14 +5,16 @@
 {% block content %}
 <div class="container mt-5">
   <h1>Edit Post</h1>
-  <form method="POST" action="{{ url_for('admin.edit_post', post_id=post.id) }}">
+  <form method="POST" action="{{ url_for('admin.edit_post', post_id=post.id) }}" onsubmit="return validateForm()">
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
+      <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}">
+      <div id="title-error" class="text-danger mt-2" style="display: none;">Title cannot be empty.</div>
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">Content</label>
-      <textarea class="form-control" id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+      <textarea class="form-control" id="content" name="content" rows="10">{{ post.content }}</textarea>
+      <div id="content-error" class="text-danger mt-2" style="display: none;">Content cannot be empty.</div>
     </div>
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a href="{{ url_for('admin.list_posts') }}" class="btn btn-secondary">Cancel</a>
@@ -23,6 +25,35 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
 <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <script>
-  new EasyMDE({ element: document.getElementById('content') });
+  const easyMDE = new EasyMDE({
+    element: document.getElementById('content'),
+    autofocus: true, // Ensure the editor is focusable
+    forceSync: true  // Automatically sync content with the textarea
+  });
+
+  function validateForm() {
+    // Validate title field
+    const title = document.getElementById('title').value.trim();
+    const titleErrorDiv = document.getElementById('title-error');
+    if (!title) {
+      titleErrorDiv.style.display = 'block';
+      document.getElementById('title').focus();
+      return false;
+    }
+    titleErrorDiv.style.display = 'none';
+
+    // Explicitly synchronize EasyMDE content with the underlying textarea
+    easyMDE.codemirror.save();
+    const content = document.getElementById('content').value.trim();
+    const contentErrorDiv = document.getElementById('content-error');
+    if (!content) {
+      contentErrorDiv.style.display = 'block';
+      document.getElementById('content').focus(); // Ensure the field is focusable
+      return false;
+    }
+    contentErrorDiv.style.display = 'none';
+
+    return true;
+  }
 </script>
 {% endblock %}

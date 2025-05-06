@@ -44,19 +44,40 @@ def test_create_post_with_markdown(browser, live_server):
     browser.get(f"{live_server_url}/admin/posts/new")
 
     # Fill out the title field
-    browser.find_element(By.ID, "title").send_keys("Test Post")
+    browser.find_element(By.ID, "title").send_keys("Markdown Test Post")
 
     # Interact with the EasyMDE editor
     editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
-    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("This is a test post.").perform()
+    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("# Markdown Title\n\nThis is a **Markdown** post.").perform()
 
     # Submit the form
     browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
 
-
     # Verify redirection to the posts list
     assert browser.current_url == f"{live_server_url}/admin/posts"
     assert "Post created successfully!" in browser.page_source  # Check for flash message
+
+    # Verify the post is displayed correctly on the blog page
+    browser.get(f"{live_server_url}/blog")
+    assert "Markdown Test Post" in browser.page_source
+    assert "<h1>Markdown Title</h1>" in browser.page_source
+    assert "<p>This is a <strong>Markdown</strong> post.</p>" in browser.page_source
+
+def test_create_post_with_empty_markdown(browser, live_server):
+    """Test creating a post with an empty Markdown editor."""
+    live_server_url = live_server.url()
+    browser.get(f"{live_server_url}/admin/posts/new")
+
+    # Fill out only the title field
+    browser.find_element(By.ID, "title").send_keys("Empty Markdown Test")
+
+    # Attempt to submit the form
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+
+    # Check for the error message
+    content_error = browser.find_element(By.ID, "content-error")
+    assert content_error.is_displayed()
+    assert content_error.text == "Content cannot be empty."
 
 def test_edit_post(browser, live_server):
     """Test editing an existing post."""
@@ -97,6 +118,37 @@ def test_edit_post(browser, live_server):
     assert browser.current_url == f"{live_server_url}/admin/posts"
     assert "Post updated successfully!" in browser.page_source  # Check for flash message
 
+def test_edit_post_with_markdown(browser, live_server):
+    """Test editing a post with Markdown content."""
+    live_server_url = live_server.url()
+
+    # Create a post programmatically
+    browser.get(f"{live_server_url}/admin/posts/new")
+    browser.find_element(By.ID, "title").send_keys("Original Markdown Post")
+    editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
+    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("# Original Title\n\nOriginal **content**.").perform()
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+
+    # Navigate to the admin posts page and click edit
+    browser.get(f"{live_server_url}/admin/posts")
+    edit_button = browser.find_element(By.LINK_TEXT, "Edit")
+    edit_button.click()
+
+    # Update the Markdown content
+    browser.find_element(By.ID, "title").clear()
+    browser.find_element(By.ID, "title").send_keys("Updated Markdown Post")
+    editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
+    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("\b" * 50 + "# Updated Title\n\nUpdated **content**.").perform()
+
+    # Submit the form
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+
+    # Verify the updated post is displayed correctly
+    browser.get(f"{live_server_url}/blog")
+    assert "Updated Markdown Post" in browser.page_source
+    assert "<h1>Updated Title</h1>" in browser.page_source
+    assert "<p>Updated <strong>content</strong>.</p>" in browser.page_source
+
 def test_delete_post(browser, live_server):
     """Test deleting a post."""
     live_server_url = live_server.url()
@@ -132,18 +184,49 @@ def test_delete_post(browser, live_server):
     assert browser.current_url == f"{live_server_url}/admin/posts"
     assert "Post deleted successfully!" in browser.page_source  # Check for flash message
 
-def test_form_validation(browser, live_server):
-    """Test form validation when creating a post."""
+
+def test_create_post_empty_title(browser, live_server):
+    """Test form validation when creating a post with an empty title."""
     live_server_url = live_server.url()
     browser.get(f"{live_server_url}/admin/posts/new")
 
-    # Attempt to submit the form without filling it out
-    submit_button = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
-    submit_button.click()
+    # Fill out only the content field
+    editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
+    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("This is a test post.").perform()
 
-    # Check for the browser's validation popup message
-    title_field = browser.find_element(By.ID, "title")
-    assert title_field.get_attribute("validationMessage") == "Please fill out this field."
+    # Attempt to submit the form
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
 
-    content_field = browser.find_element(By.ID, "content")
-    assert content_field.get_attribute("validationMessage") == "Please fill out this field."
+    # Check for the error message
+    title_error = browser.find_element(By.ID, "title-error")
+    assert title_error.is_displayed()
+    assert title_error.text == "Title cannot be empty."
+
+def test_edit_post_empty_content(browser, live_server):
+    """Test form validation when editing a post with empty content."""
+    live_server_url = live_server.url()
+
+    # Create a post programmatically
+    browser.get(f"{live_server_url}/admin/posts/new")
+    browser.find_element(By.ID, "title").send_keys("Test Post")
+    editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
+    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("This is a test post.").perform()
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+
+    # Navigate to the admin posts page and click edit
+    browser.get(f"{live_server_url}/admin/posts")
+    edit_button = browser.find_element(By.LINK_TEXT, "Edit")
+    edit_button.click()
+
+    # Clear the content field
+    editor_iframe = browser.find_element(By.CLASS_NAME, "CodeMirror")
+    ActionChains(browser).move_to_element(editor_iframe).click().send_keys("\b" * 50).perform()
+
+    # Attempt to submit the form
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+
+    # Check for the error message
+    content_error = browser.find_element(By.ID, "content-error")
+    assert content_error.is_displayed()
+    assert content_error.text == "Content cannot be empty."
+

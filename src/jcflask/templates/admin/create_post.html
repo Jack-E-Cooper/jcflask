@@ -5,14 +5,16 @@
 {% block content %}
 <div class="container mt-5">
   <h1>Create New Post</h1>
-  <form method="POST" action="{{ url_for('admin.create_post') }}" onsubmit="syncEditorContent()">
+  <form method="POST" action="{{ url_for('admin.create_post') }}" onsubmit="return validateForm()">
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control" id="title" name="title" required>
+      <input type="text" class="form-control" id="title" name="title">
+      <div id="title-error" class="text-danger mt-2" style="display: none;">Title cannot be empty.</div>
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">Content</label>
-      <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+      <textarea class="form-control" id="content" name="content" rows="10"></textarea>
+      <div id="content-error" class="text-danger mt-2" style="display: none;">Content cannot be empty.</div>
     </div>
     <button type="submit" class="btn btn-primary">Create Post</button>
     <a href="{{ url_for('admin.list_posts') }}" class="btn btn-secondary">Cancel</a>
@@ -30,11 +32,29 @@
     forceSync: true  // Automatically sync content with the textarea
   });
 
-  function syncEditorContent() {
+  function validateForm() {
+    // Validate title field
+    const title = document.getElementById('title').value.trim();
+    const titleErrorDiv = document.getElementById('title-error');
+    if (!title) {
+      titleErrorDiv.style.display = 'block';
+      document.getElementById('title').focus();
+      return false;
+    }
+    titleErrorDiv.style.display = 'none';
+
     // Explicitly synchronize EasyMDE content with the underlying textarea
     easyMDE.codemirror.save();
-    // Ensure the textarea is focusable for form validation
-    document.getElementById('content').setAttribute('required', 'true');
+    const content = document.getElementById('content').value.trim();
+    const contentErrorDiv = document.getElementById('content-error');
+    if (!content) {
+      contentErrorDiv.style.display = 'block';
+      document.getElementById('content').focus(); // Ensure the field is focusable
+      return false;
+    }
+    contentErrorDiv.style.display = 'none';
+
+    return true;
   }
 </script>
 {% endblock %}
