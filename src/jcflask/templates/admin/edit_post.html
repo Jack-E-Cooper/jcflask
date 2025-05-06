@@ -21,18 +21,16 @@
   </form>
 </div>
 
-<!-- Include EasyMDE for Markdown editing -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
 <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <script>
   const easyMDE = new EasyMDE({
     element: document.getElementById('content'),
-    autofocus: true, // Ensure the editor is focusable
-    forceSync: true  // Automatically sync content with the textarea
+    autofocus: true,
+    forceSync: true
   });
 
   function validateForm() {
-    // Validate title field
     const title = document.getElementById('title').value.trim();
     const titleErrorDiv = document.getElementById('title-error');
     if (!title) {
@@ -42,13 +40,12 @@
     }
     titleErrorDiv.style.display = 'none';
 
-    // Explicitly synchronize EasyMDE content with the underlying textarea
     easyMDE.codemirror.save();
     const content = document.getElementById('content').value.trim();
     const contentErrorDiv = document.getElementById('content-error');
     if (!content) {
       contentErrorDiv.style.display = 'block';
-      document.getElementById('content').focus(); // Ensure the field is focusable
+      document.getElementById('content').focus();
       return false;
     }
     contentErrorDiv.style.display = 'none';

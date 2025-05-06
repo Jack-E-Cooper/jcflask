@@ -1,12 +1,12 @@
 import os
 import markdown
-from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for)
+from flask import Flask, send_from_directory
 from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
 from . import db
 
 def create_app(test_config=None):
     """Create and configure the Flask application."""
+    os.environ.setdefault('FLASK_ENV', 'development')  # Default to development for local use
     app = Flask(__name__)
 
     # Load configuration based on the environment
@@ -23,20 +23,30 @@ def create_app(test_config=None):
     # Initialize SQLAlchemy with the app
     db.init_app(app)
 
-    # Ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
     # Register the markdown filter
     @app.template_filter('markdown')
     def markdown_filter(content):
         return markdown.markdown(content, extensions=['fenced_code', 'codehilite'])
 
+    # Create database schema in development and testing environments
+    if env in ['development', 'testing']:
+        with app.app_context():
+            db.create_all()
+
+    # Ensure the instance folder exists (skip in production if not needed)
+    if env != 'production':
+        try:
+            os.makedirs(app.instance_path)
+        except OSError:
+            pass
+
     @app.route('/favicon.ico')
     def favicon():
-        return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+        return send_from_directory(
+            os.path.join(app.root_path, 'static'),
+            'favicon.ico',
+            mimetype='image/vnd.microsoft.icon'
+        )
 
     # Register blueprints
     from . import home
