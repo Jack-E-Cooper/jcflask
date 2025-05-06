@@ -1,0 +1,14 @@
+Flask==3.1.0
+gunicorn
+pytest
+coverage
+beautifulsoup4
+# Flask-Mail
+pytest-mock
+flask-sqlalchemy
+markdown
+azure-identity 
+azure-keyvault-secrets
+selenium 
+webdriver-manager 
+pytest-flask

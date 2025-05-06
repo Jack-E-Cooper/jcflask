@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Posts{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1>Posts</h1>
+  <a href="{{ url_for('admin.create_post') }}" class="btn btn-primary mb-3">Create New Post</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td>{{ post.title }}</td>
+        <td>
+          <a href="{{ url_for('admin.edit_post', post_id=post.id) }}" class="btn btn-secondary">Edit</a>
+          <form method="POST" action="{{ url_for('admin.delete_post', post_id=post.id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this post?');">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
