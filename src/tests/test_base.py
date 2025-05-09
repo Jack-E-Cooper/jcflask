@@ -36,3 +36,20 @@ def test_navigation_active(client, url, expected_active_text):
         f"For URL {url}, expected nav item text '{expected_active_text}' to be active, "
         f"but got '{active_item_text}'"
     )
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        ("/"),
+        ("/about"),
+        ("/portfolio"),
+        ("/blog"),
+        ("/contact"),
+    ]
+)
+def test_header_has_linkedin_github(client, url):
+    response = client.get(url)
+    assert response.status_code == 200, f"GET {url} failed with status code {response.status_code}"
+ 
+    assert b"https://github.com/Jack-E-Cooper" in response.data
+    assert b"https://linkedin.com/in/johnedwardcooper" in response.data
