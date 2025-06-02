@@ -252,3 +252,32 @@ def test_edit_post_empty_content(browser, live_server):
     assert content_error.is_displayed()
     assert content_error.text == "Content cannot be empty."
 
+def test_portfolio_project_links(browser, live_server):
+    """Test that project links on the portfolio page work and load dynamic content."""
+    live_server_url = live_server.url().rstrip("/")
+    browser.get(f"{live_server_url}/portfolio")
+    # Find all project "View Project" buttons
+    project_buttons = browser.find_elements(By.CSS_SELECTOR, "a.btn-outline-primary")
+    assert project_buttons
+    # Click the first project button
+    project_buttons[0].click()
+    # Wait for the project page to load
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.TAG_NAME, "h1"))
+    )
+    # Check for expected content on the project page
+    assert "Personal Website" in browser.page_source or "Project" in browser.page_source
+    assert "Description" in browser.page_source
+    assert "Technologies Used" in browser.page_source
+
+def test_project_page_direct_access(browser, live_server):
+    """Test direct access to a project page shows dynamic content."""
+    live_server_url = live_server.url().rstrip("/")
+    browser.get(f"{live_server_url}/project/flaskwebapp")
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.TAG_NAME, "h1"))
+    )
+    assert "Personal Website" in browser.page_source
+    assert "Description" in browser.page_source
+    assert "Technologies Used" in browser.page_source
+
