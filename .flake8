@@ -1,0 +1,6 @@
+[flake8]
+exclude = venv,env,.venv,.env,site-packages,*/migrations/*,tests,lib
+max-line-length = 88
+ignore = E501
+# Only lint files in the src directory (including subdirectories)
+extend-include = src/**/*.py
