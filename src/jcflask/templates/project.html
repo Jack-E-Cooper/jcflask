@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mt-5">
   <h1 class="mb-4">{{ project.title }}</h1>
-  <p class="text-muted">Last updated on {{ project.updated_at.strftime('%Y-%m-%d') }}</p>
+  <p class="text-muted">Last updated on {{ project.updated_at }}</p>
   <hr>
   <div>
     <h2>Description</h2>
@@ -19,9 +19,19 @@
       {% endfor %}
     </ul>
   </div>
+  {% if project.writeup %}
+  <div>
+    <h2>Project Writeup</h2>
+    <div>
+      {{ project.writeup|safe }}
+    </div>
+  </div>
+  {% endif %}
   <div>
     <h2>Links</h2>
+    {% if project.github_link %}
     <a href="{{ project.github_link }}" target="_blank" class="btn btn-primary">View on GitHub</a>
+    {% endif %}
     {% if project.demo_link %}
     <a href="{{ project.demo_link }}" target="_blank" class="btn btn-secondary">View Demo</a>
     {% endif %}

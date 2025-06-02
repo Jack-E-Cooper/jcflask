@@ -68,6 +68,9 @@ def create_app(test_config=None):
     from . import admin
     app.register_blueprint(admin.bp)
 
+    from . import project
+    app.register_blueprint(project.bp)
+
     return app
 
 

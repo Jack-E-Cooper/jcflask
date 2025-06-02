@@ -11,59 +11,21 @@
 
 <div class="container">
   <div class="row">
-    <!-- Project 1 -->
+    {% for project in projects %}
     <div class="col-md-4">
       <div class="card mb-4 shadow-sm h-100">
-        <img src="/static/images/website_project.png" class="card-img-top" alt="Personal Website & Blog">
+        <img src="{{ project.image }}" class="card-img-top">
         <div class="card-body d-flex flex-column">
-          <h5 class="card-title">Personal Website & Blog</h5>
-          <p class="card-text">
-            Developed a personal website and blog using Azure and Python Flask to showcase technical excellence in cloud security and DevSecOps. This project demonstrates end-to-end security practices such as CI/CD integration, secure code deployment, and the implementation of best practices in access control and monitoring.
-          </p>
-          <p><strong>Technologies:</strong> Azure, Python, Flask, CI/CD, DevSecOps, Azure Key Vault</p>
+          <h5 class="card-title">{{ project.title }}</h5>
+          <p class="card-text">{{ project.summary }}</p>
+          <p><strong>Technologies:</strong> {{ project.technologies | join(', ') }}</p>
           <div class="mt-auto">
-            <!-- Add a link if available -->
-            <a href="#" class="btn btn-outline-primary disabled">View Project</a>
+            <a href="{{ url_for('project.view_project', project_id=project.id) }}" class="btn btn-outline-primary">View Project</a>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Project 2 -->
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm h-100">
-        <img src="/static/images/physical_security.png" class="card-img-top" alt="Physical Security & Policy Enhancements">
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">Physical Security & Policy Enhancements</h5>
-          <p class="card-text">
-            As an Information Systems Security Officer in the Canadian Armed Forces, spearheaded the update of physical security protocols in consultation with law enforcement agencies. Implemented comprehensive security audits and policy enhancements to respond to evolving threat intelligence.
-          </p>
-          <p><strong>Technologies:</strong> Security Audits, Risk Assessment, Policy Development, Law Enforcement Collaboration</p>
-          <div class="mt-auto">
-            <!-- Add a link if available -->
-            <a href="#" class="btn btn-outline-primary disabled">View Project</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Project 3 -->
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm h-100">
-        <img src="/static/images/crisis_management.png" class="card-img-top" alt="Telecommunications & Crisis Management">
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">Telecommunications & Crisis Management</h5>
-          <p class="card-text">
-            Led telecommunications operations and crisis response during the COVID-19 pandemic. Planned and executed disaster-resilient communications strategies for the Toronto Army Reserve. This initiative ensured effective remote work protocols and a rapid response to crisis situations.
-          </p>
-          <p><strong>Technologies:</strong> Telecommunications, Crisis Management, Remote Work Security, IT Transition</p>
-          <div class="mt-auto">
-            <!-- Add a link if available -->
-            <a href="#" class="btn btn-outline-primary disabled">View Project</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}
