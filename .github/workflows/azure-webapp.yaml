@@ -54,6 +54,11 @@ jobs:
     #       --template-file infra/main.bicep \
     #       --parameters infra/main.parameters.json
 
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v3
       with:
