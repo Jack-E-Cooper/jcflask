@@ -11,24 +11,28 @@ from bs4 import BeautifulSoup
         ("/portfolio", "Portfolio"),
         ("/blog", "Blog"),
         ("/contact", "Contact"),
-    ]
+    ],
 )
 def test_navigation_active(client, url, expected_active_text):
     response = client.get(url)
-    assert response.status_code == 200, f"GET {url} failed with status code {response.status_code}"
+    assert (
+        response.status_code == 200
+    ), f"GET {url} failed with status code {response.status_code}"
     html = response.get_data(as_text=True)
-    
+
     # Parse the HTML using BeautifulSoup
-    soup = BeautifulSoup(html, 'html.parser')
-    
+    soup = BeautifulSoup(html, "html.parser")
+
     # Find the navigation bar and all nav items
     nav = soup.find("nav")
     nav_items = nav.find_all("li", class_="nav-item")
-    
+
     # Find the li tags with the active class
     active_items = [item for item in nav_items if "active" in item.get("class", [])]
-    assert len(active_items) == 1, f"Expected exactly one active nav item on {url}, but found {len(active_items)}"
-    
+    assert (
+        len(active_items) == 1
+    ), f"Expected exactly one active nav item on {url}, but found {len(active_items)}"
+
     # Check that the active nav item’s link text matches the expected text.
     active_anchor = active_items[0].find("a")
     active_item_text = active_anchor.get_text(strip=True)
@@ -36,6 +40,7 @@ def test_navigation_active(client, url, expected_active_text):
         f"For URL {url}, expected nav item text '{expected_active_text}' to be active, "
         f"but got '{active_item_text}'"
     )
+
 
 @pytest.mark.parametrize(
     "url",
@@ -45,11 +50,13 @@ def test_navigation_active(client, url, expected_active_text):
         ("/portfolio"),
         ("/blog"),
         ("/contact"),
-    ]
+    ],
 )
 def test_header_has_linkedin_github(client, url):
     response = client.get(url)
-    assert response.status_code == 200, f"GET {url} failed with status code {response.status_code}"
- 
+    assert (
+        response.status_code == 200
+    ), f"GET {url} failed with status code {response.status_code}"
+
     assert b"https://github.com/Jack-E-Cooper" in response.data
     assert b"https://linkedin.com/in/johnedwardcooper" in response.data

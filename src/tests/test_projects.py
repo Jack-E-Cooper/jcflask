@@ -1,9 +1,13 @@
 import pytest
 
-@pytest.mark.parametrize("project_id,expected_title", [
-    ("flaskwebapp", "Personal Website"),
-    # Add more projects here as needed
-])
+
+@pytest.mark.parametrize(
+    "project_id,expected_title",
+    [
+        ("flaskwebapp", "Personal Website"),
+        # Add more projects here as needed
+    ],
+)
 def test_project_page_content(client, project_id, expected_title):
     response = client.get(f"/project/{project_id}")
     assert response.status_code == 200

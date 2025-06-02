@@ -1,6 +1,7 @@
 from jcflask.db import db
 from jcflask.models import BlogPost
 
+
 def test_blog_post_model(app):
     with app.app_context():
         # Create a new blog post
@@ -18,6 +19,7 @@ def test_blog_post_model(app):
         db.session.delete(retrieved_post)
         db.session.commit()
 
+
 def test_blog_index(client, app):
     with app.app_context():
         # Create test blog posts
@@ -27,10 +29,11 @@ def test_blog_index(client, app):
         db.session.commit()
 
     # Test blog index
-    response = client.get('/blog')
+    response = client.get("/blog")
     assert response.status_code == 200
     assert b"Post 1" in response.data
     assert b"Post 2" in response.data
+
 
 def test_view_post(client, app):
     with app.app_context():
@@ -41,7 +44,7 @@ def test_view_post(client, app):
         post_id = post.id
 
     # Test viewing the individual post
-    response = client.get(f'/blog/{post_id}')
+    response = client.get(f"/blog/{post_id}")
     assert response.status_code == 200
     assert b"Test Post" in response.data
     assert b"This is a test post." in response.data

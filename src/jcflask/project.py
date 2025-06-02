@@ -1,16 +1,21 @@
-from flask import (
-    Blueprint, render_template
-)
+from flask import Blueprint, render_template
 from werkzeug.exceptions import NotFound
 
-bp = Blueprint('project', __name__, url_prefix='/project')
+bp = Blueprint("project", __name__, url_prefix="/project")
 
 # Centralized project data
 PROJECTS = {
     "flaskwebapp": {
         "title": "Personal Website & Blog",
         "description": "This project is a personal website and blog built with Python Flask and deployed on Azure. It demonstrates secure web development, CI/CD automation, and DevSecOps best practices. The site features a portfolio, blog, and contact form, all designed with a focus on all-hazards security and organizational resilience.",
-        "technologies": ["Python", "Flask", "Azure", "CI/CD", "DevSecOps", "Azure Key Vault"],
+        "technologies": [
+            "Python",
+            "Flask",
+            "Azure",
+            "CI/CD",
+            "DevSecOps",
+            "Azure Key Vault",
+        ],
         "github_link": "https://github.com/Jack-E-Cooper/jcflask",
         # "demo_link": "/",
         "updated_at": "2025-06-02",
@@ -30,7 +35,7 @@ PROJECTS = {
         <p>
         This project serves as a template for resilient, secure web services, integrating information security, policy, and operational continuity for organizations seeking robust digital solutions.
         </p>
-        """
+        """,
     },
     # "physical_security": {
     #     "title": "Physical Security & Policy Enhancements",
@@ -52,9 +57,10 @@ PROJECTS = {
     # }
 }
 
-@bp.route('/<project_id>', endpoint='view_project')
+
+@bp.route("/<project_id>", endpoint="view_project")
 def view_project(project_id):
     project = PROJECTS.get(project_id)
     if not project:
         raise NotFound(f"Project with ID '{project_id}' not found.")
-    return render_template('project.html', project=project)
+    return render_template("project.html", project=project)

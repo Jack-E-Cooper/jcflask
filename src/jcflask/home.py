@@ -1,10 +1,8 @@
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
-)
-from werkzeug.exceptions import abort
+from flask import Blueprint, render_template
 
-bp = Blueprint('home', __name__)
+bp = Blueprint("home", __name__)
 
-@bp.route('/')
+
+@bp.route("/")
 def index():
-    return render_template('home.html', active_page='home')
+    return render_template("home.html", active_page="home")
