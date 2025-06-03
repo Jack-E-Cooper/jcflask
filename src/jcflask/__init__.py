@@ -1,8 +1,8 @@
 import os
-import markdown
 from flask import Flask, send_from_directory
 from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
 from . import db
+import markdown
 
 
 def create_app(test_config=None):
