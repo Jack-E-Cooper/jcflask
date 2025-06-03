@@ -33,10 +33,15 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Copy requirements.txt to wwwroot
+      run: |
+        mkdir -p wwwroot
+        cp requirements.txt wwwroot/
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: 'jcflask'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-        package: .
+        package: wwwroot
         startup-command: 'gunicorn main:app'
