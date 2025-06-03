@@ -60,7 +60,6 @@ resource sites_jcflask_name_resource 'Microsoft.Web/sites@2024-04-01' = {
 resource sites_jcflask_name_ftp 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2024-04-01' = {
   parent: sites_jcflask_name_resource
   name: 'ftp'
-  location: 'France Central'
   properties: {
     allow: true
   }
@@ -69,7 +68,6 @@ resource sites_jcflask_name_ftp 'Microsoft.Web/sites/basicPublishingCredentialsP
 resource sites_jcflask_name_scm 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2024-04-01' = {
   parent: sites_jcflask_name_resource
   name: 'scm'
-  location: 'France Central'
   properties: {
     allow: true
   }
@@ -78,7 +76,6 @@ resource sites_jcflask_name_scm 'Microsoft.Web/sites/basicPublishingCredentialsP
 resource sites_jcflask_name_web 'Microsoft.Web/sites/config@2024-04-01' = {
   parent: sites_jcflask_name_resource
   name: 'web'
-  location: 'France Central'
   properties: {
     numberOfWorkers: 1
     defaultDocuments: [
@@ -156,7 +153,6 @@ resource sites_jcflask_name_web 'Microsoft.Web/sites/config@2024-04-01' = {
 resource sites_jcflask_name_sites_jcflask_name_f0fefycebzhchph9_francecentral_01_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2024-04-01' = {
   parent: sites_jcflask_name_resource
   name: '${sites_jcflask_name}-f0fefycebzhchph9.francecentral-01.azurewebsites.net'
-  location: 'France Central'
   properties: {
     siteName: 'jcflask'
     hostNameType: 'Verified'

@@ -41,27 +41,21 @@ jobs:
         pip install pytest
         pytest
 
-    # Optional: Deploy Bicep infra (uncomment if desired)
-    # - name: Azure Login
-    #   uses: azure/login@v1
-    #   with:
-    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
-    #
-    # - name: Deploy Bicep
-    #   run: |
-    #     az deployment group create \
-    #       --resource-group <your-resource-group> \
-    #       --template-file infra/main.bicep \
-    #       --parameters infra/main.parameters.json
+    - name: Install Bicep CLI
+      run: |
+        az bicep install
 
     - name: Azure Login
+      if: success()
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: 'Deploy to Azure Web App'
+      if: success()
       uses: azure/webapps-deploy@v3
       with:
         app-name: 'jcflask'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         package: .
+        startup-command: 'gunicorn app:jcflask'
