@@ -1,14 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "jcflask"
 version = "0.1.0"
 description = "Jack Cooper's flask website."
+authors = [{ name = "Jack Cooper" }]
 dependencies = [
     "flask",
 ]
 
-[project.urls]
-Homepace = ""
-Issues = ""
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["src/tests"]

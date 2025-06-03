@@ -36,8 +36,8 @@ def test_gunicorn_entrypoint_exists_and_is_correct():
     # Check that 'app' is defined in main.py
     with open(main_py, "r", encoding="utf-8") as f:
         content = f.read()
-        assert (
-            "app = create_app()" in content or "app=create_app()" in content.replace(" ", "")
+        assert "app = create_app()" in content or "app=create_app()" in content.replace(
+            " ", ""
         ), (
             "'app = create_app()' not found in main.py. "
             "Gunicorn requires 'app' to be defined for 'gunicorn main:app'."
