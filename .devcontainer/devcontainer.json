@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
     "name": "jcflask",
-    "image": "mcr.microsoft.com/devcontainers/python:3.12-bullseye",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
     "features": {
         "ghcr.io/devcontainers/features/azure-cli:latest": {},
         "ghcr.io/azure/azure-dev/azd:latest": {}
@@ -12,7 +12,7 @@
         "vscode": {
             // Set *default* container specific settings.json values on container create.
             "settings": {
-                "python.defaultInterpreterPath": "/usr/local/bin/python"
+                "python.defaultInterpreterPath": "/usr/local/bin/python3.11"
             },
 
             // Add the IDs of extensions you want installed when the container is created.
@@ -26,10 +26,10 @@
     "forwardPorts": [5000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "/bin/bash .devcontainer/setup.sh && pip install -e .",
+	"postCreateCommand": "/bin/bash .devcontainer/setup.sh && python3.11 -m pip install -e .",
 
 	// Use 'postStartCommand' to run commands after the container is started (more frequently than create).
-	"postStartCommand": "pip install --user -r requirements.txt && pip install -e .",
+	"postStartCommand": "python3.11 -m pip install --user -r requirements.txt && python3.11 -m pip install -e .",
     
 
     // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.

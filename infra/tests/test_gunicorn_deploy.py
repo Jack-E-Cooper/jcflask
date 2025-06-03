@@ -102,8 +102,21 @@ def test_azure_appservice_python_env():
 def test_requirements_installed_for_azure_webapp():
     """
     Ensure all modules in requirements.txt are importable, as Azure Web Apps expects after deployment.
+    Also output diagnostics to verify the Python environment in use.
     """
     import importlib
+    import sys
+    import os
+
+    print("Python executable:", sys.executable)
+    print("sys.path:", sys.path)
+    print("PYTHONPATH:", os.environ.get("PYTHONPATH", ""))
+    print("VIRTUAL_ENV:", os.environ.get("VIRTUAL_ENV", ""))
+    try:
+        import site
+        print("site.getsitepackages():", getattr(site, "getsitepackages", lambda: "N/A")())
+    except Exception as e:
+        print("Could not get site-packages:", e)
 
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     requirements_path = os.path.join(project_root, "requirements.txt")
@@ -118,8 +131,11 @@ def test_requirements_installed_for_azure_webapp():
             module = line.split("==")[0].split(">=")[0].split("<=")[0].split("[")[0].replace("-", "_").strip()
             if not module:
                 continue
-            # Some packages have different import names; skip known problematic ones or handle mapping if needed
+            # Try importing the module as-is, then as lowercase (common for packages like Flask)
             try:
                 importlib.import_module(module)
-            except ImportError as e:
-                raise AssertionError(f"Module '{module}' from requirements.txt could not be imported: {e}")
+            except ImportError:
+                try:
+                    importlib.import_module(module.lower())
+                except ImportError as e:
+                    raise AssertionError(f"Module '{module}' from requirements.txt could not be imported: {e}")

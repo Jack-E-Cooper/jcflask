@@ -28,38 +28,38 @@ jobs:
 
     - name: Show Python executable and environment before install
       run: |
-        which python
-        python --version
+        which python3.11
+        python3.11 --version
         echo "PYTHONPATH: $PYTHONPATH"
         echo "VIRTUAL_ENV: $VIRTUAL_ENV"
-        python -m site
+        python3.11 -m site
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -e .
+        python3.11 -m pip install --upgrade pip
+        python3.11 -m pip install -r requirements.txt
+        python3.11 -m pip install -e .
 
     - name: Show Python executable and environment after install
       run: |
-        which python
-        python --version
+        which python3.11
+        python3.11 --version
         echo "PYTHONPATH: $PYTHONPATH"
         echo "VIRTUAL_ENV: $VIRTUAL_ENV"
-        python -m site
-        pip list
+        python3.11 -m site
+        python3.11 -m pip list
 
     - name: Show Gunicorn version and command
       run: |
-        pip show gunicorn || echo "Gunicorn not installed"
+        python3.11 -m pip show gunicorn || echo "Gunicorn not installed"
         which gunicorn || echo "Gunicorn not found in PATH"
         echo "About to run: gunicorn main:app"
         env | grep -i python || true
 
     - name: Run tests
       run: |
-        pip install pytest
-        pytest
+        python3.11 -m pip install pytest
+        python3.11 -m pytest
 
     - name: Install Bicep CLI
       run: |
@@ -84,3 +84,33 @@ jobs:
       if: success()
       run: |
         echo "Check Azure Web App logs via Azure Portal or 'az webapp log tail --name jcflask --resource-group <your-resource-group>' to verify requirements are installed."
+
+    - name: Test with system Python (simulate Azure App Service)
+      run: |
+        echo "=== System Python Diagnostics ==="
+        which python3.11
+        python3.11 --version
+        echo "PYTHONPATH: $PYTHONPATH"
+        echo "VIRTUAL_ENV: $VIRTUAL_ENV"
+        python3.11 -m site
+
+        echo "=== Install dependencies with system Python ==="
+        python3.11 -m pip install --upgrade pip
+        python3.11 -m pip install -r requirements.txt
+        python3.11 -m pip install -e .
+
+        echo "=== Show installed packages ==="
+        python3.11 -m pip freeze
+
+        echo "=== Run pytest with system Python ==="
+        python3.11 -m pip install pytest
+        python3.11 -m pytest
+
+        echo "=== Run Gunicorn with system Python ==="
+        python3.11 -m pip install gunicorn
+        python3.11 -m gunicorn main:app --bind 127.0.0.1:5006 --workers 1 --timeout 10 &
+        GUNICORN_PID=$!
+        sleep 5
+        ps aux | grep gunicorn
+        curl -v http://127.0.0.1:5006/ || true
+        kill $GUNICORN_PID || true
