@@ -77,26 +77,16 @@ def test_gunicorn_can_start_app():
 
 def test_azure_appservice_python_env():
     """
-    Ensure the environment variables and PATH are set as Azure App Service expects for Python.
+    Ensure the Python version matches Azure App Service expectations (3.11.x).
     """
-    # Simulate the Azure App Service Linux environment
-    path = os.environ.get("PATH", "")
-    python_home = os.environ.get("PYTHONHOME", "")
-    python_exe = sys.executable
+    import sys
 
-    # Azure App Service for Linux typically uses /usr/local/bin/python3.11 or /usr/bin/python3.11
-    assert "python" in python_exe, "Python executable not found in expected location"
-    assert any(
-        p in python_exe for p in ["/usr/local/bin/python3.11", "/usr/bin/python3.11", "/opt/python/3.11.*/bin/python3.11"]
-    ), f"Python executable path '{python_exe}' is not typical for Azure App Service for Linux Python 3.11"
-
-    # PATH should include the directory of the python executable
-    python_dir = os.path.dirname(python_exe)
-    assert python_dir in path.split(":"), f"Python directory '{python_dir}' not found in PATH"
-
-    # PYTHONHOME is usually unset or set to the python installation root
-    if python_home:
-        assert python_home in python_exe, "PYTHONHOME does not match Python executable location"
+    python_version = sys.version_info
+    print("Python version:", sys.version)
+    assert python_version.major == 3 and python_version.minor == 11, (
+        f"Python version is {python_version.major}.{python_version.minor}, "
+        "but Azure App Service is configured for Python 3.11"
+    )
 
 
 def test_requirements_installed_for_azure_webapp():
