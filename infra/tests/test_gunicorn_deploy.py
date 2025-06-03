@@ -108,6 +108,43 @@ def test_requirements_installed_for_azure_webapp():
     import sys
     import os
 
+    # Mapping from PyPI package names to import names
+    MODULE_IMPORT_SUBSTITUTIONS = {
+        "beautifulsoup4": "bs4",
+        "pillow": "PIL",
+        "pyyaml": "yaml",
+        "scikit-learn": "sklearn",
+        "opencv-python": "cv2",
+        "python-dotenv": "dotenv",
+        "flask-restful": "flask_restful",
+        "flask-sqlalchemy": "flask_sqlalchemy",
+        "flask-login": "flask_login",
+        "flask-migrate": "flask_migrate",
+        "flask-wtf": "flask_wtf",
+        "flask-cors": "flask_cors",
+        "flask-mail": "flask_mail",
+        "flask-marshmallow": "flask_marshmallow",
+        "azure-identity": "azure.identity",
+        "azure_identity": "azure.identity",
+        "azure_keyvault_secrets": "azure.keyvault.secrets",
+        "azure-mgmt-resource": "azure.mgmt.resource",
+        "azure-mgmt-web": "azure.mgmt.web",
+        "azure-storage-blob": "azure.storage.blob",
+        "azure-storage-queue": "azure.storage.queue",
+        "azure-storage-file-share": "azure.storage.fileshare",
+        "azure-common": "azure.common",
+        "azure-core": "azure.core",
+        "msal": "msal",
+        "requests": "requests",
+        "marshmallow": "marshmallow",
+        "gunicorn": "gunicorn",
+        "pytest": "pytest",
+        "sqlalchemy": "sqlalchemy",
+        "setuptools": "setuptools",
+        "wheel": "wheel",
+        # Add more as needed
+    }
+
     print("Python executable:", sys.executable)
     print("sys.path:", sys.path)
     print("PYTHONPATH:", os.environ.get("PYTHONPATH", ""))
@@ -131,11 +168,19 @@ def test_requirements_installed_for_azure_webapp():
             module = line.split("==")[0].split(">=")[0].split("<=")[0].split("[")[0].replace("-", "_").strip()
             if not module:
                 continue
-            # Try importing the module as-is, then as lowercase (common for packages like Flask)
-            try:
-                importlib.import_module(module)
-            except ImportError:
+            import_names = [module]
+            # Add lowercase version if different
+            if module.lower() != module:
+                import_names.append(module.lower())
+            # Add substitution if present
+            if module.lower() in MODULE_IMPORT_SUBSTITUTIONS:
+                import_names.append(MODULE_IMPORT_SUBSTITUTIONS[module.lower()])
+            # Try all possible import names
+            for import_name in import_names:
                 try:
-                    importlib.import_module(module.lower())
-                except ImportError as e:
-                    raise AssertionError(f"Module '{module}' from requirements.txt could not be imported: {e}")
+                    importlib.import_module(import_name)
+                    break
+                except ImportError:
+                    continue
+            else:
+                raise AssertionError(f"Module '{module}' from requirements.txt could not be imported using any of: {import_names}")
