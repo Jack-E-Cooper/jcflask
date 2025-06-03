@@ -12,7 +12,7 @@ from jcflask.models import BlogPost
 import time
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)  # Set to WARNING
 
 
 @pytest.fixture(autouse=True)
@@ -55,7 +55,7 @@ def test_new_post_button(browser, live_server):
 
 def test_create_post_with_markdown(browser, live_server):
     """Test creating a new post with Markdown content."""
-    logging.debug("Starting test_create_post_with_markdown")
+    logging.warning("Starting test_create_post_with_markdown")
     live_server_url = live_server.url().rstrip("/")  # Ensure consistent URL formatting
     browser.get(f"{live_server_url}/admin/posts/new")
 
