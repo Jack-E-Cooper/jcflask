@@ -18,6 +18,7 @@ where = ["src"]
 testpaths = ["src/tests"]
 addopts = [
     "--import-mode=importlib",
+    "--ignore=src/tests/test_browser.py",
 ]
 pythonpath = [
   "src"

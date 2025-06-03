@@ -80,7 +80,6 @@ def test_azure_appservice_python_env():
     Ensure the environment variables and PATH are set as Azure App Service expects for Python.
     """
     # Simulate the Azure App Service Linux environment
-    python_path = os.environ.get("PYTHONPATH", "")
     path = os.environ.get("PATH", "")
     python_home = os.environ.get("PYTHONHOME", "")
     python_exe = sys.executable
