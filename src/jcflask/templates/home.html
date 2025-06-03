@@ -8,7 +8,11 @@
   <div class="container">
     <img 
       class="d-block mx-auto mb-4 rounded-circle hero-headshot"
-      src="{{ url_for('static', filename='images/JackCooperPortrait.jpg') }}"
+      src="{% if config.ENV == 'production' %}
+        https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/JackCooperPortrait.jpg
+      {% else %}
+        {{ url_for('static', filename='images/JackCooperPortrait.jpg') }}
+      {% endif %}"
       alt="Jack Cooper"
     />
     <style>
