@@ -58,4 +58,4 @@ jobs:
         app-name: 'jcflask'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         package: .
-        startup-command: 'gunicorn app:jcflask'
+        startup-command: 'gunicorn main:app'
