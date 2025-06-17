@@ -1,5 +1,11 @@
+import pytest
 from jcflask.db import db
 from jcflask.models import BlogPost
+
+pytestmark = pytest.mark.skipif(
+    not hasattr(pytest, "flask_app") or not getattr(pytest.flask_app.config, "ENABLE_BLOG", False),
+    reason="Blog feature is disabled (ENABLE_BLOG is False)"
+)
 
 
 def test_blog_post_model(app):

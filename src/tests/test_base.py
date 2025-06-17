@@ -13,7 +13,9 @@ from bs4 import BeautifulSoup
         ("/contact", "Contact"),
     ],
 )
-def test_navigation_active(client, url, expected_active_text):
+def test_navigation_active(client, url, expected_active_text, app):
+    if url == "/blog" and not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     response = client.get(url)
     assert (
         response.status_code == 200
@@ -52,7 +54,9 @@ def test_navigation_active(client, url, expected_active_text):
         ("/contact"),
     ],
 )
-def test_header_has_linkedin_github(client, url):
+def test_header_has_linkedin_github(client, url, app):
+    if url == "/blog" and not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     response = client.get(url)
     assert (
         response.status_code == 200

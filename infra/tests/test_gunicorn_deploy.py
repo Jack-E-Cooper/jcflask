@@ -132,6 +132,8 @@ def test_requirements_installed_for_azure_webapp():
         "sqlalchemy": "sqlalchemy",
         "setuptools": "setuptools",
         "wheel": "wheel",
+        "psycopg2-binary": "psycopg2",
+        "psycopg2_binary": "psycopg2",
         # Add more as needed
     }
 

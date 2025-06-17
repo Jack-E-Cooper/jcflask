@@ -6,6 +6,7 @@ from azure.keyvault.secrets import SecretClient
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ENABLE_BLOG = False  # Set to True when ready
 
 
 class DevelopmentConfig(Config):
@@ -20,7 +21,18 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///production.db")
+
+    # Prefer DATABASE_URL if set, otherwise build from Azure env vars
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL",
+        "postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}".format(
+            user=os.getenv("AZURE_POSTGRES_USER", ""),
+            password=os.getenv("AZURE_POSTGRES_PASSWORD", ""),
+            host=os.getenv("AZURE_POSTGRES_HOST", ""),
+            port=os.getenv("AZURE_POSTGRES_PORT", "5432"),
+            db=os.getenv("AZURE_POSTGRES_DB", ""),
+        ),
+    )
 
     @property
     def ADMIN_USERNAME(self):

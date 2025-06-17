@@ -12,3 +12,4 @@ azure-keyvault-secrets
 selenium 
 webdriver-manager 
 pytest-flask
+psycopg2-binary

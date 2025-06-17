@@ -12,6 +12,8 @@ def reset_database(app):
 
 
 def test_admin_create_post(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     """Test creating a new post."""
     response = client.post(
         "/admin/posts/new",
@@ -26,6 +28,8 @@ def test_admin_create_post(client, app):
 
 
 def test_admin_edit_post(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     with app.app_context():
         post = BlogPost(title="Old Title", content="Old Content")
         db.session.add(post)
@@ -45,6 +49,8 @@ def test_admin_edit_post(client, app):
 
 
 def test_admin_delete_post(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     with app.app_context():
         post = BlogPost(title="Delete Me", content="To be deleted")
         db.session.add(post)
@@ -60,6 +66,8 @@ def test_admin_delete_post(client, app):
 
 
 def test_admin_create_markdown_post(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     markdown_content = "# Markdown Title\n\nThis is a **Markdown** post."
     response = client.post(
         "/admin/posts/new",
@@ -74,6 +82,8 @@ def test_admin_create_markdown_post(client, app):
 
 
 def test_view_markdown_post(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     markdown_content = "# Markdown Title\n\nThis is a **Markdown** post."
     with app.app_context():
         post = BlogPost(title="Markdown Test Post", content=markdown_content)
@@ -88,6 +98,8 @@ def test_view_markdown_post(client, app):
 
 
 def test_database_starts_empty(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     """Test that the database starts empty."""
     with app.app_context():
         posts = BlogPost.query.all()

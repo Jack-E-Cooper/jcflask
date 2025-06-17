@@ -65,10 +65,6 @@ def create_app(test_config=None):
 
     app.register_blueprint(portfolio.bp)
 
-    from . import blog
-
-    app.register_blueprint(blog.bp)
-
     from . import contact
 
     app.register_blueprint(contact.bp)
@@ -80,5 +76,11 @@ def create_app(test_config=None):
     from . import project
 
     app.register_blueprint(project.bp)
+
+    # Conditionally register blog
+    if app.config.get("ENABLE_BLOG", False):
+        from . import blog
+
+        app.register_blueprint(blog.bp)
 
     return app

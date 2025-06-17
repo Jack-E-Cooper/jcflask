@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flask: Run App (Debug)",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "main.py",
+                "FLASK_ENV": "development"
+            },
+            "args": [
+                "run",
+                "--debug",
+                // "--no-debugger", // Remove this line if you want Flask's built-in debugger
+                "--no-reload"    // Remove this line if you want auto-reload
+            ],
+            "jinja": true
+        }
+    ]
+}

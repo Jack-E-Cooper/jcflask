@@ -19,9 +19,17 @@
       {% endfor %}
     </ul>
   </div>
+  {% if project.embed_html %}
+  <div class="my-4">
+    <h2>Interactive Demo / Embedded Content</h2>
+    <div>
+      {{ project.embed_html|safe }}
+    </div>
+  </div>
+  {% endif %}
   {% if project.writeup %}
   <div>
-    <h2>Project Writeup</h2>
+    <!-- <h2>Project Writeup</h2> -->
     <div>
       {{ project.writeup|safe }}
     </div>
