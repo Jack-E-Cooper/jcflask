@@ -12,39 +12,48 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
   <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="/">John Cooper</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li class="nav-item {% if active_page == 'about' %}active{% endif %}">
-          <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item {% if active_page == 'portfolio' %}active{% endif %}">
-          <a class="nav-link" href="/portfolio">Portfolio</a>
-        </li>
-        {% if config.ENABLE_BLOG %}
-        <li class="nav-item {% if active_page == 'blog' %}active{% endif %}">
-          <a class="nav-link" href="/blog">Blog</a>
-        </li>
-        {% endif %}
-        <li class="nav-item {% if active_page == 'contact' %}active{% endif %}">
-          <a class="nav-link" href="/contact">Contact</a>
-        </li>
-      </ul>
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" href="https://github.com/Jack-E-Cooper" target="_blank" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a class="nav-item nav-link" href="https://linkedin.com/in/johnedwardcooper" target="_blank" aria-label="LinkedIn">
-          <i class="fab fa-linkedin"></i>
-        </a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">John Cooper</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint == 'home.index' %} active{% endif %}" href="{{ url_for('home.index') }}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint == 'about.index' %} active{% endif %}" href="{{ url_for('about.index') }}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint == 'portfolio.index' %} active{% endif %}" href="{{ url_for('portfolio.index') }}">Portfolio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint == 'gallery.gallery' %} active{% endif %}" href="{{ url_for('gallery.gallery') }}">Gallery</a>
+          </li>
+          {% if config.ENABLE_BLOG %}
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint.startswith('blog.') %} active{% endif %}" href="{{ url_for('blog.index') }}">Blog</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint == 'contact.index' %} active{% endif %}" href="{{ url_for('contact.index') }}">Contact</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav flex-row">
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="https://github.com/Jack-E-Cooper" target="_blank" rel="noopener" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="https://linkedin.com/in/johnedwardcooper" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>

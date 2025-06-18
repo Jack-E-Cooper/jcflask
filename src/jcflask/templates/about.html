@@ -3,16 +3,22 @@
 {% block title %}About Me - John Cooper{% endblock %}
 
 {% block content %}
-<header class="mb-5">
+<header class="mb-5 text-center">
+  <img 
+    class="d-block mx-auto mb-4 rounded-circle hero-headshot"
+    src="{{ url_for('static', filename='images/JackCooperPortrait.jpg') }}"
+    alt="Jack Cooper"
+    style="width: min(22vw, 220px); height: min(22vw, 220px); object-fit: cover; border: 5px solid #007bff; box-shadow: 0 4px 24px rgba(0,0,0,0.12); background: #fff;"
+  />
   <h1>About Me</h1>
-  <p>
-    Hello, I'm John Cooper—a former Signals Captain in the Canadian Army with a passion for <strong>all-hazards security</strong>. My career bridges information security, physical security, policy development, training, ethics, and continuity management. I am dedicated to building resilient organizations by integrating technical proficiency, strategic insight, and a holistic approach to risk management.
-  </p>
 </header>
 
-<section class="mb-5">
-  <h2>My Journey</h2>
+<section class="mb-5 text-start" style="max-width: 800px; margin: 0 auto;">
   <p>
+    Hello, I'm John Cooper—a former Signals Captain in the Canadian Army with a passion for <strong>all-hazards security</strong>. 
+  </p>
+  <p>  
+    My career bridges information security, physical security, policy development, training, ethics, and continuity management. I am dedicated to
     My professional path began in the Canadian Armed Forces, where I developed a unique blend of technical, operational, and leadership skills. From serving as an Electronic Warfare Troop Commander and Deputy Operations Officer to functioning as a trusted Information Systems Security Officer, I gained deep experience in risk management, threat analysis, secure communications, and crisis response. Each role challenged me to think critically, act decisively, and uphold the highest standards of integrity and ethics, even in high-pressure situations.
   </p>
   <p>
@@ -20,7 +26,7 @@
   </p>
 </section>
 
-<section class="mb-5">
+<section class="mb-5 text-start" style="max-width: 800px; margin: 0 auto;">
   <h2>Professional Highlights</h2>
   <ul>
     <li><strong>Strategic Leadership:</strong> Led diverse teams in the Canadian Armed Forces, coordinating security operations, guiding technical projects, and providing critical instruction on communications, incident response, and operational risk management.</li>

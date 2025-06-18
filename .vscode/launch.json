@@ -8,7 +8,7 @@
             "module": "flask",
             "env": {
                 "FLASK_APP": "main.py",
-                "FLASK_ENV": "development"
+                "FLASK_ENV": "development",
             },
             "args": [
                 "run",

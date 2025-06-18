@@ -72,6 +72,46 @@ PROJECTS = {
         </ul>
         """,
     },
+    "toastmasters": {
+        "title": "Toastmasters International: Innovative Planning & Leadership",
+        "summary": "Achievements in Toastmasters: Level 3 Innovative Planning, contest finalist, club leadership, and mentorship.",
+        "description": (
+            "As an active member of Toastmasters International, I am currently finishing Level 3 in the Innovative Planning Pathway. "
+            "In 2025, I placed 3rd at the Division Contest for English Improvisational Speaking in Nice, France. "
+            "I served as Vice President Membership (VPM) on the Executive Committee (EXCOM) for 2025, growing club membership from 14 to 22. "
+            "Throughout my journey, I have both mentored new members and benefited from the mentorship of experienced Toastmasters."
+        ),
+        "technologies": [
+            "Public Speaking",
+            "Leadership",
+            "Mentorship",
+            "Innovative Planning",
+            "Event Organization",
+            "Toastmasters Pathways"
+        ],
+        "github_link": "",
+        "updated_at": "2025-06-02",
+        "image": "DTKT_speak_lead_grow.png",
+        "prod_image_url": "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/DTKT_speak_lead_grow.png",
+        "embed_html": """
+        <video class="img-fluid rounded shadow-sm" style="background:#000; width:100%; max-width:700px;" controls poster="/static/images/DTKT_speak_lead_grow.png">
+          <source src="/static/videos/RES_presentation_video.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
+          Your browser does not support the video tag.
+        </video>
+        """,
+        "writeup": """
+        <h3>Toastmasters Achievements</h3>
+        <ul>
+          <li>Finishing Level 3 in the <strong>Innovative Planning</strong> Pathway</li>
+          <li><strong>3rd Place</strong> at the Division Contest for English Improvisational Speaking (Nice, 2025)</li>
+          <li>Served as <strong>VP Membership</strong> (EXCOM, 2025): grew club from 14 to 22 members</li>
+          <li>Mentored new members and received mentorship from experienced Toastmasters</li>
+        </ul>
+        <p>
+        The video below is from a club presentation, demonstrating my growth in public speaking and leadership.
+        </p>
+        """,
+    },
     # ...add more projects as needed...
 }
 

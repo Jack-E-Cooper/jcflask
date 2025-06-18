@@ -3,44 +3,37 @@
 {% block title %}Home - John Cooper{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="jumbotron mt-5">
-  <div class="container">
-    <img 
-      class="d-block mx-auto mb-4 rounded-circle hero-headshot"
-      src="{% if config.ENV == 'production' %}
-        https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/JackCooperPortrait.jpg
-      {% else %}
-        {{ url_for('static', filename='images/JackCooperPortrait.jpg') }}
-      {% endif %}"
-      alt="Jack Cooper"
-    />
-    <style>
-      .hero-headshot {
-      width: min(22vw, 220px);
-      height: min(22vw, 220px);
-      object-fit: cover;
-      border: 5px solid #007bff;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-      background: #fff;
-      }
-      @media (max-width: 576px) {
-      .hero-headshot {
-        width: 120px;
-        height: 120px;
-      }
-      }
-    </style>
-    
-    <h1 class="display-4">All-Hazards Security & Resilience</h1>
-    <p class="lead">
-      Bridging cybersecurity, physical security, policy, training, ethics, and continuity management to strengthen organizational resilience.
-    </p>
-    <hr class="my-4">
-    <p>
-      Welcome! I'm John Cooper—a multidisciplinary security leader and former Canadian Army Signals Captain. My mission is to empower organizations to anticipate, withstand, and recover from all types of threats, integrating information security, physical security, policy, training, and continuity management into a unified, resilient approach.
-    </p>
-    <a class="btn btn-primary btn-lg" href="/about" role="button">Learn More About Me</a>
+<!-- Hero Image -->
+<div class="text-center mb-5">
+  <img src="{{ url_for('static', filename='images/JackCooperPortrait2.jpg') }}" class="d-block mx-auto hero-carousel-img" alt="Jack Cooper Portrait" style="max-width: 100%; max-height: 600px; object-fit: cover; object-position: top;">
+</div>
+<style>
+  .hero-carousel-img {
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+    object-position: top;
+  }
+  .intro-large-text {
+    font-size: 1.5rem;
+  }
+</style>
+
+<!-- Introduction Paragraph -->
+<div class="container mb-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="p-3 bg-light rounded shadow-sm">
+        <p class="lead mb-0 intro-large-text" style="text-align:left;">
+          Welcome! I'm John Cooper—a multidisciplinary security leader and former Canadian Army Signals Captain. My mission is to empower organizations to anticipate, withstand, and recover from all types of threats, integrating information security, physical security, policy, training, and continuity management into a unified, resilient approach. Explore my portfolio, blog, and contact information below to learn more about my work in all-hazards security and resilience.
+        </p>
+        <p></p>
+        <p class="lead mb-0 intro-large-text" style="text-align:left;">Learn more about my professional background.</p>
+        <div class="mt-auto">
+          <a href="/about" class="btn btn-outline-primary">About</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -81,6 +74,18 @@
           <p class="card-text">Get in touch to discuss all-hazards security, resilience, or collaboration opportunities.</p>
           <div class="mt-auto">
             <a href="/contact" class="btn btn-outline-primary">Contact Me</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Gallery Card -->
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">Gallery</h5>
+          <p class="card-text">Browse a gallery of professional and personal highlights.</p>
+          <div class="mt-auto">
+            <a href="/gallery" class="btn btn-outline-primary">View Gallery</a>
           </div>
         </div>
       </div>

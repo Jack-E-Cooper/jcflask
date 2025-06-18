@@ -77,6 +77,17 @@ def create_app(test_config=None):
 
     app.register_blueprint(project.bp)
 
+    # Register gallery blueprint
+    from flask import Blueprint, render_template
+
+    gallery_bp = Blueprint("gallery", __name__, url_prefix="/gallery")
+
+    @gallery_bp.route("/")
+    def gallery():
+        return render_template("gallery.html")
+
+    app.register_blueprint(gallery_bp)
+
     # Conditionally register blog
     if app.config.get("ENABLE_BLOG", False):
         from . import blog

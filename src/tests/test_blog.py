@@ -2,13 +2,9 @@ import pytest
 from jcflask.db import db
 from jcflask.models import BlogPost
 
-pytestmark = pytest.mark.skipif(
-    not hasattr(pytest, "flask_app") or not getattr(pytest.flask_app.config, "ENABLE_BLOG", False),
-    reason="Blog feature is disabled (ENABLE_BLOG is False)"
-)
-
-
 def test_blog_post_model(app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     with app.app_context():
         # Create a new blog post
         post = BlogPost(title="Test Post", content="This is a test post.")
@@ -27,6 +23,8 @@ def test_blog_post_model(app):
 
 
 def test_blog_index(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     with app.app_context():
         # Create test blog posts
         post1 = BlogPost(title="Post 1", content="Content for post 1")
@@ -42,6 +40,8 @@ def test_blog_index(client, app):
 
 
 def test_view_post(client, app):
+    if not app.config.get("ENABLE_BLOG", False):
+        pytest.skip("Blog feature is disabled (ENABLE_BLOG is False)")
     with app.app_context():
         # Create a test blog post
         post = BlogPost(title="Test Post", content="This is a test post.")
