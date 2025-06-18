@@ -7,9 +7,6 @@ import markdown
 
 def create_app(test_config=None):
     """Create and configure the Flask application."""
-    os.environ.setdefault(
-        "FLASK_ENV", "development"
-    )  # Default to development for local use
     app = Flask(__name__)
 
     # Load configuration based on the environment
@@ -106,3 +103,4 @@ def create_app(test_config=None):
         app.register_blueprint(blog.bp)
 
     return app
+
