@@ -10,7 +10,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
 
     # Load configuration based on the environment
-    env = os.getenv("FLASK_ENV", "production")
+    env = os.environ.get("FLASK_ENV", "production")
     if test_config:
         app.config.from_object(TestingConfig)
     elif env == "development":
@@ -101,6 +101,11 @@ def create_app(test_config=None):
         from . import blog
 
         app.register_blueprint(blog.bp)
+
+    @app.route("/envcheck")
+    def envcheck():
+        import os
+        return f"FLASK_ENV={os.environ.get('FLASK_ENV')}, app.config['ENV']={app.config.get('ENV')}"
 
     return app
 
