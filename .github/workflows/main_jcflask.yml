@@ -54,6 +54,8 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    env:
+      FLASK_ENV: production
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
@@ -67,7 +69,14 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
+      - name: Check FLASK_ENV is production
+        run: |
+          echo "FLASK_ENV=${FLASK_ENV}"
+          if [ "${FLASK_ENV}" != "production" ]; then
+            echo "FLASK_ENV is not set to production!"
+            exit 1
+          fi
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
