@@ -13,10 +13,13 @@ def create_app(test_config=None):
     env = os.environ.get("FLASK_ENV", "production")
     if test_config:
         app.config.from_object(TestingConfig)
+        app.config["FLASK_ENV"] = "testing"
     elif env == "development":
         app.config.from_object(DevelopmentConfig)
+        app.config["FLASK_ENV"] = "development"
     elif env == "production":
         app.config.from_object(ProductionConfig)
+        app.config["FLASK_ENV"] = "production"
     else:
         raise ValueError(f"Unknown FLASK_ENV: {env}")
 
@@ -42,7 +45,7 @@ def create_app(test_config=None):
 
     # Image URL handler
     def image_url(filename):
-        if app.config.get("FLASK_ENV") == "production":
+        if app.config["FLASK_ENV"] == "production":
             # Example: Use Azure Blob Storage URL
             blob_base = app.config.get("BLOB_IMAGE_BASE_URL", "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/")
             return f"{blob_base}{filename}"

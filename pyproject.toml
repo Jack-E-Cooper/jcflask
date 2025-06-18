@@ -27,3 +27,8 @@ pythonpath = [
 [tool.coverage.run]
 branch = true
 source = ["jcflask"]
+
+[tool.pytest_env]
+env = [
+  "FLASK_ENV=testing",
+]
