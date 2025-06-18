@@ -1,5 +1,5 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, url_for
 from jcflask.config import DevelopmentConfig, TestingConfig, ProductionConfig
 from . import db
 import markdown
@@ -42,6 +42,17 @@ def create_app(test_config=None):
             os.makedirs(app.instance_path)
         except OSError:
             pass
+
+    # Image URL handler
+    def image_url(filename):
+        if app.config.get("ENV") == "production":
+            # Example: Use Azure Blob Storage URL
+            blob_base = app.config.get("BLOB_IMAGE_BASE_URL", "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/")
+            return f"{blob_base}{filename}"
+        else:
+            return url_for('static', filename=f'images/{filename}')
+
+    app.jinja_env.globals['image_url'] = image_url
 
     @app.route("/favicon.ico")
     def favicon():

@@ -1,5 +1,8 @@
 {
     // ...existing settings...
-    "python.defaultInterpreterPath": "/usr/bin/python3"
+    "python.defaultInterpreterPath": "/usr/bin/python3",
+    "github-actions.workflows.pinned.workflows": [
+        ".github/workflows/main_jcflask.yml"
+    ]
     // ...existing settings...
 }

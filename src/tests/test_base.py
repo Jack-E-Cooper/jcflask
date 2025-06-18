@@ -75,3 +75,18 @@ def test_header_has_linkedin_github(client, url, app):
     linkedin_link = nav.find("a", href="https://linkedin.com/in/johnedwardcooper")
     assert linkedin_link is not None, "LinkedIn link not found in navbar"
     assert linkedin_link.find("i", class_="fab fa-linkedin") is not None, "LinkedIn icon not found in navbar"
+
+
+def test_image_url_env(app):
+    """Test that image_url returns the correct URL based on environment."""
+    with app.app_context():
+        # Development environment: should use /static/images/...
+        app.config["ENV"] = "development"
+        url = app.jinja_env.globals["image_url"]("test.jpg")
+        assert url.startswith("/static/images/") and url.endswith("test.jpg")
+
+        # Production environment: should use blob base URL
+        app.config["ENV"] = "production"
+        app.config["BLOB_IMAGE_BASE_URL"] = "https://example.blob.core.windows.net/images/"
+        url = app.jinja_env.globals["image_url"]("test.jpg")
+        assert url == "https://example.blob.core.windows.net/images/test.jpg"

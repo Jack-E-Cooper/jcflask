@@ -20,8 +20,7 @@ PROJECTS = {
         "github_link": "https://github.com/Jack-E-Cooper/jcflask",
         # "demo_link": "/",
         "updated_at": "2025-06-02",
-        "image": "jc_portfolio_project_image.png",  # Just the filename for local use
-        "prod_image_url": "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/jc_portfolio_project_image.png",
+        "image": "jc_portfolio_project_image.png",
         "embed_html": """
         <!-- Example embedded element -->
         <iframe src="https://example.com/demo" width="100%" height="300" frameborder="0"></iframe>
@@ -55,8 +54,7 @@ PROJECTS = {
         ],
         "github_link": "",
         "updated_at": "2025-06-02",
-        "image": "TMExcelWhatIf.png", 
-        "prod_image_url": "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/TMExcelWhatIf.png",
+        "image": "TMExcelWhatIf.png",
         "embed_html": """
         <iframe width="700" height="900" frameborder="0" scrolling="yes" src="https://1drv.ms/x/c/2b30a3c5a46267c0/IQRMBZDjPc-NQJ-FzWUddAR0AdfwXqddAgI7fHV-iUReTG4?em=2&wdAllowInteractivity=False&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdInConfigurator=True&wdInConfigurator=True"></iframe>
         """,
@@ -92,7 +90,6 @@ PROJECTS = {
         "github_link": "",
         "updated_at": "2025-06-02",
         "image": "DTKT_speak_lead_grow.png",
-        "prod_image_url": "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/DTKT_speak_lead_grow.png",
         "embed_html": """
         <video class="img-fluid rounded shadow-sm" style="background:#000; width:100%; max-width:700px;" controls poster="/static/images/DTKT_speak_lead_grow.png">
           <source src="/static/videos/RES_presentation_video.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
@@ -117,22 +114,15 @@ PROJECTS = {
 
 def get_portfolio_projects():
     """Return a list of project summaries for the portfolio page, with correct image URLs."""
-    app = current_app._get_current_object()
-    is_debug = getattr(app, "debug", False)
-    env = current_app.config.get("ENV", "production")
+    image_url = current_app.jinja_env.globals["image_url"]
     projects = []
     for pid, pdata in PROJECTS.items():
-        # Use static image if in debug mode or not production
-        if is_debug or env != "production":
-            image_url = url_for("static", filename=f"images/{pdata.get('image')}")
-        else:
-            image_url = pdata.get("prod_image_url")
         projects.append({
             "id": pid,
             "title": pdata["title"],
             "summary": pdata.get("summary") or pdata.get("description", ""),
             "technologies": pdata.get("technologies", []),
-            "image": image_url,
+            "image": image_url(pdata.get("image")),
         })
     return projects
 
@@ -141,13 +131,8 @@ def view_project(project_id):
     project = PROJECTS.get(project_id)
     if not project:
         raise NotFound(f"Project with ID '{project_id}' not found.")
-    app = current_app._get_current_object()
-    is_debug = getattr(app, "debug", False)
-    env = current_app.config.get("ENV", "production")
-    print(f"[DEBUG] view_project: ENV={env}, debug={is_debug}")
-    # Use static image if in debug mode or not production
-    if is_debug or env != "production":
-        project["display_image"] = url_for("static", filename=f"images/{project.get('image')}")
-    else:
-        project["display_image"] = project.get("prod_image_url")
+    image_url = current_app.jinja_env.globals["image_url"]
+    project["display_image"] = image_url(project.get("image"))
     return render_template("project.html", project=project)
+
+
