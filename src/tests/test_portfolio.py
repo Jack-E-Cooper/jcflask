@@ -27,7 +27,7 @@ def test_project_image_url_env(client, app):
     import os
 
     # Test for development environment (should use url_for/static)
-    app.config["ENV"] = "development"
+    app.config["FLASK_ENV"] = "development"
     with app.app_context():
         projects = get_portfolio_projects()
         for project in projects:
@@ -35,7 +35,7 @@ def test_project_image_url_env(client, app):
                 f"Expected local static image path in development, got: {project['image']}"
 
     # Test for production environment (should use prod_image_url)
-    app.config["ENV"] = "production"
+    app.config["FLASK_ENV"] = "production"
     with app.app_context():
         projects = get_portfolio_projects()
         for project in projects:

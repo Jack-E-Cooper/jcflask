@@ -21,10 +21,6 @@ PROJECTS = {
         # "demo_link": "/",
         "updated_at": "2025-06-02",
         "image": "jc_portfolio_project_image.png",
-        "embed_html": """
-        <!-- Example embedded element -->
-        <iframe src="https://example.com/demo" width="100%" height="300" frameborder="0"></iframe>
-        """,
         "writeup": """
         <h3>Project Overview</h3>
         <p>
@@ -104,9 +100,6 @@ PROJECTS = {
           <li>Served as <strong>VP Membership</strong> (EXCOM, 2025): grew club from 14 to 22 members</li>
           <li>Mentored new members and received mentorship from experienced Toastmasters</li>
         </ul>
-        <p>
-        The video below is from a club presentation, demonstrating my growth in public speaking and leadership.
-        </p>
         """,
     },
     # ...add more projects as needed...

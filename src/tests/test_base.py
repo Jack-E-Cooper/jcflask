@@ -81,12 +81,12 @@ def test_image_url_env(app):
     """Test that image_url returns the correct URL based on environment."""
     with app.app_context():
         # Development environment: should use /static/images/...
-        app.config["ENV"] = "development"
+        app.config["FLASK_ENV"] = "development"
         url = app.jinja_env.globals["image_url"]("test.jpg")
         assert url.startswith("/static/images/") and url.endswith("test.jpg")
 
         # Production environment: should use blob base URL
-        app.config["ENV"] = "production"
+        app.config["FLASK_ENV"] = "production"
         app.config["BLOB_IMAGE_BASE_URL"] = "https://example.blob.core.windows.net/images/"
         url = app.jinja_env.globals["image_url"]("test.jpg")
         assert url == "https://example.blob.core.windows.net/images/test.jpg"

@@ -45,7 +45,7 @@ def create_app(test_config=None):
 
     # Image URL handler
     def image_url(filename):
-        if app.config.get("ENV") == "production":
+        if app.config.get("FLASK_ENV") == "production":
             # Example: Use Azure Blob Storage URL
             blob_base = app.config.get("BLOB_IMAGE_BASE_URL", "https://jcflaskfilestore.blob.core.windows.net/jcflask-website-images/")
             return f"{blob_base}{filename}"
