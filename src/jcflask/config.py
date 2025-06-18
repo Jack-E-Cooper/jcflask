@@ -6,7 +6,7 @@ from azure.keyvault.secrets import SecretClient
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    ENABLE_BLOG = True  # Set to True when ready
+    ENABLE_BLOG = False  # Set to True when ready
 
 
 class DevelopmentConfig(Config):
